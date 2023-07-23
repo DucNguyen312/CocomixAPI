@@ -7,12 +7,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.Scanner;
 
-@SpringBootApplication(scanBasePackages = {"com.example.library.*", "com.example.admin"})
+@SpringBootApplication(scanBasePackages = {"com.example.library.*", "com.example.admin", "com.example.user"})
 @EnableJpaRepositories(value = "com.example.library.Repository")
 @EntityScan(value = "com.example.library.Model")
 public class AdminApplication {
     public static void main(String[] args) {
         SpringApplication.run(AdminApplication.class, args);
     }
-
 }

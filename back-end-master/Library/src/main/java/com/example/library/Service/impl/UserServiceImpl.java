@@ -43,6 +43,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Users saveUser(UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        if(userRepository.existsByUsername(username)){
+            return null;
+        }
+
+        Users user = new Users();
+        user.setFullName(userDTO.getFullName());
+        user.setBirthdate(userDTO.getBirthdate());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setEmail(userDTO.getEmail());
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setRoles(Arrays.asList(roleRepository.findByName("USER")));
+        return userRepository.save(user);
+    }
+
+    @Override
     public List<Users> findAll() {
         return userRepository.findAll();
     }

@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface UserService {
     Users saveAdmin(UserDTO userDTO);
 
+    Users saveUser(UserDTO userDTO);
+
     List<Users> findAll();
 
     Optional<Users> findUser(Long id);
