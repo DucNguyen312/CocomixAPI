@@ -4,6 +4,7 @@ package com.example.library.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name = "user")
 @Data @NoArgsConstructor @AllArgsConstructor
+@Component
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +36,5 @@ public class Users {
     @JoinTable(name = "admins_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Collection<Role> roles;
-
-
 
 }

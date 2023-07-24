@@ -1,5 +1,4 @@
-package com.example.admin.Config;
-
+package com.example.user.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,19 +15,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class AdminConfig extends WebSecurityConfigurerAdapter {
-
-    public UserDetailsService adminDetailsService(){
-        return new AdminConfigService();
+public class UsersConfig extends WebSecurityConfigurerAdapter {
+    public UserDetailsService adminDetailsService() {
+        return new UserConfigService();
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(adminDetailsService());
         provider.setPasswordEncoder(passwordEncoder());
@@ -39,6 +37,7 @@ public class AdminConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/*");
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
@@ -47,10 +46,10 @@ public class AdminConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/admin/**").permitAll()
-                .antMatchers(HttpMethod.DELETE , "/admin/**").permitAll()
-                .antMatchers(HttpMethod.GET , "/admin/**" ).permitAll()
-                .antMatchers(HttpMethod.PUT , "/admin/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/user/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/user/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/user/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
