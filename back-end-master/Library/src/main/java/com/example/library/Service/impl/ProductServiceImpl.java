@@ -38,10 +38,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(ProductDTO p) {
-        String name = p.getName();
-        if(productRepository.existsByName(name)){
-            return null;
-        }
         Product product = new Product();
         product.setName(p.getName());
         product.setPrice(p.getPrice());
@@ -70,8 +66,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String deleteProduct(Long id) {
-        productRepository.deleteById(id);
-        return "Delete product success";
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent()){
+            productRepository.deleteById(id);
+            return "Delete product success";
+        }
+        return "Not found id product";
     }
 
     @Override
