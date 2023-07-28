@@ -1,6 +1,7 @@
 package com.example.library.Service.impl;
 
 import com.example.library.DTO.UserDTO;
+import com.example.library.Model.Role;
 import com.example.library.Model.Users;
 import com.example.library.Repository.RoleRepository;
 import com.example.library.Repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,30 +27,11 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Users saveAdmin(UserDTO userDTO) {
-        String username = userDTO.getUsername();
-        if(userRepository.existsByUsername(username)){
-            return null;
-        }
-
-        Users user = new Users();
-        user.setFullName(userDTO.getFullName());
-        user.setBirthdate(userDTO.getBirthdate());
-        user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setEmail(userDTO.getEmail());
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRoles(Arrays.asList(roleRepository.findByName("ADMIN")));
-        return userRepository.save(user);
-    }
-
-    @Override
     public Users saveUser(UserDTO userDTO) {
         String username = userDTO.getUsername();
         if(userRepository.existsByUsername(username)){
             return null;
         }
-
         Users user = new Users();
         user.setFullName(userDTO.getFullName());
         user.setBirthdate(userDTO.getBirthdate());
@@ -56,7 +39,6 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDTO.getEmail());
         user.setUsername(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRoles(Arrays.asList(roleRepository.findByName("USER")));
         return userRepository.save(user);
     }
 
@@ -132,4 +114,5 @@ public class UserServiceImpl implements UserService {
     public String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }
+
 }

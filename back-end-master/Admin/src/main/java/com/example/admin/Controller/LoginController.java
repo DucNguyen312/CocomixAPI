@@ -3,9 +3,11 @@ package com.example.admin.Controller;
 import com.example.library.DTO.UserDTO;
 import com.example.library.Model.Users;
 import com.example.library.Service.CacheService;
+import com.example.library.Service.RoleService;
 import com.example.library.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +17,10 @@ import java.util.List;
 public class LoginController {
     @Autowired
     private UserService userService;
-
     @Autowired
     private CacheService cacheService;
+    @Autowired
+    private RoleService roleService;
     @GetMapping("")
     public ResponseEntity<List<Users>> getAll(@RequestParam(value = "query" , required = false) String keyword){
         if(keyword != null)
@@ -35,7 +38,9 @@ public class LoginController {
     public ResponseEntity<String> Register(@RequestBody UserDTO admin){
         if(admin == null)
             return ResponseEntity.badRequest().body("Register Fail");
-        userService.saveAdmin(admin);
+        Users users = userService.saveUser(admin);
+        if(users == null)
+            return ResponseEntity.badRequest().body("Username is exits");
         return ResponseEntity.ok("Register success");
     }
 
@@ -90,5 +95,37 @@ public class LoginController {
         return ResponseEntity.ok(userService.encryptPassword(password));
     }
 
+    @PostMapping("/{userId}/role/{roleId}")
+    public ResponseEntity<String> addUserRole(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
+        if (userId <= 0 || roleId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid user or role ID.");
+        }
+        if(userId == null || roleId == null)
+            return ResponseEntity.badRequest().body("Not found id_user or id_role");
+
+        return ResponseEntity.ok(roleService.addUserRole(userId , roleId));
+    }
+
+    @DeleteMapping("/{userId}/role/{roleId}")
+    public ResponseEntity<String> deleteUserRole(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
+        if (userId <= 0 || roleId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid user or role ID.");
+        }
+        if(userId == null || roleId == null)
+            return ResponseEntity.badRequest().body("Not found id_user or id_role");
+
+        return ResponseEntity.ok(roleService.deleteUserRole(userId , roleId));
+    }
+
+    @PutMapping("/{userId}/role/{roleId}")
+    public ResponseEntity<String> updateUserRole(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
+        if (userId <= 0 || roleId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid user or role ID.");
+        }
+        if(userId == null || roleId == null)
+            return ResponseEntity.badRequest().body("Not found id_user or id_role");
+
+        return ResponseEntity.ok(roleService.updateUserRole(userId , roleId));
+    }
 
 }

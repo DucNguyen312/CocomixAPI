@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Users saveAdmin(UserDTO userDTO);
 
     Users saveUser(UserDTO userDTO);
 
@@ -28,4 +27,6 @@ public interface UserService {
     String updatePassword(Long id , String newpassword);
 
     String encryptPassword(String password);
+
+
 }
