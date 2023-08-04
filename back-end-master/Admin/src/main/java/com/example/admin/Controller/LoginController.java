@@ -1,8 +1,12 @@
 package com.example.admin.Controller;
 
 import com.example.library.DTO.UserDTO;
+import com.example.library.DTO.User_OrderDTO;
+import com.example.library.Model.Order;
+import com.example.library.Model.OrderDetail;
 import com.example.library.Model.Users;
 import com.example.library.Service.CacheService;
+import com.example.library.Service.OrderService;
 import com.example.library.Service.RoleService;
 import com.example.library.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,9 @@ public class LoginController {
     private CacheService cacheService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("")
     public ResponseEntity<List<Users>> getAll(@RequestParam(value = "query" , required = false) String keyword){
         if(keyword != null)
@@ -128,4 +135,8 @@ public class LoginController {
         return ResponseEntity.ok(roleService.updateUserRole(userId , roleId));
     }
 
+    @GetMapping("/{userId}/order")
+    public ResponseEntity<List<User_OrderDTO>> getListOrder(@PathVariable(value = "userId") Long id){
+        return ResponseEntity.ok(orderService.ListUserOrder(id));
+    }
 }

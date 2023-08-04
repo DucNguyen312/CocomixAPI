@@ -9,6 +9,7 @@ import com.example.library.Service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -52,20 +53,30 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public String addUserRole(Long iduser, Long idrole) {
-        Optional<Role> role = roleRepository.findById(idrole);
-        Optional<Users> users = userRepository.findById(iduser);
-        if(role.isPresent() && users.isPresent()){
-            Users user = users.get();
-            if(user.getRoles() != null)
-                return "User already has roles, please update.";
+        Optional<Role> roleOptional = roleRepository.findById(idrole);
+        Optional<Users> usersOptional = userRepository.findById(iduser);
+
+        if (roleOptional.isPresent() && usersOptional.isPresent()) {
+            Role role = roleOptional.get();
+            Users user = usersOptional.get();
+
             Collection<Role> roles = user.getRoles();
-            roles.add(role.get());
+            if (roles == null) {
+                roles = new ArrayList<>();
+            }
+            // Kiểm tra xem vai trò đã tồn tại trong danh sách vai trò của người dùng hay chưa
+            if (roles.contains(role)) {
+                return "User already has this role.";
+            }
+            roles.add(role);
             user.setRoles(roles);
             userRepository.save(user);
             return "Add user to role success";
         }
-        return "User or role not exits";
+
+        return "User or role does not exist";
     }
+
 
     @Override
     public String deleteUserRole(Long iduser, Long idrole) {
@@ -107,4 +118,8 @@ public class RoleServiceImpl implements RoleService {
         return "User or role does not exist";
     }
 
+    @Override
+    public List<Users> getListUserRole(Long idRole) {
+        return userRepository.findByRoles_Id(idRole);
+    }
 }

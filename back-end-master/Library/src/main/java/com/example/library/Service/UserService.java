@@ -1,6 +1,7 @@
 package com.example.library.Service;
 
 import com.example.library.DTO.UserDTO;
+import com.example.library.Model.OrderDetail;
 import com.example.library.Model.Users;
 
 import java.util.List;
@@ -27,6 +28,5 @@ public interface UserService {
     String updatePassword(Long id , String newpassword);
 
     String encryptPassword(String password);
-
 
 }

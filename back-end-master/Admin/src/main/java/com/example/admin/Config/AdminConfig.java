@@ -47,10 +47,10 @@ public class AdminConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/admin/**" , "/product/**" , "/category/**" , "/role/**").permitAll()
-                .antMatchers(HttpMethod.DELETE , "/admin/**", "/product/**","/category/**", "/role/**").permitAll()
-                .antMatchers(HttpMethod.GET , "/admin/**" , "/product/**","/category/**", "/role/**").permitAll()
-                .antMatchers(HttpMethod.PUT , "/admin/**", "/product/**","/category/**", "/role/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/admin/**" , "/product/**" , "/category/**" , "/role/**" , "/order/**").permitAll()
+                .antMatchers(HttpMethod.DELETE , "/admin/**", "/product/**","/category/**", "/role/**","/order/**").permitAll()
+                .antMatchers(HttpMethod.GET , "/admin/**" , "/product/**","/category/**", "/role/**","/order/**").permitAll()
+                .antMatchers(HttpMethod.PUT , "/admin/**", "/product/**","/category/**", "/role/**","/order/**").permitAll()
 
                 .anyRequest().authenticated()
                 .and()

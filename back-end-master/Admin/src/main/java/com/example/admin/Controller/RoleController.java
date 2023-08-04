@@ -2,6 +2,7 @@ package com.example.admin.Controller;
 
 import com.example.library.DTO.RoleDTO;
 import com.example.library.Model.Role;
+import com.example.library.Model.Users;
 import com.example.library.Service.RoleService;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,13 @@ public class RoleController {
         if(r == null)
             return ResponseEntity.badRequest().body("Add Role Fail");
         return ResponseEntity.ok("Add Role Success");
+    }
+
+    @GetMapping("/{roleId}/user")
+    public ResponseEntity<List<Users>> getAlluserByRole(@PathVariable(value = "roleId") Long id){
+        if(id == null)
+            return ResponseEntity.badRequest().body(null);
+        return ResponseEntity.ok(roleService.getListUserRole(id));
     }
 
     @PutMapping("/{roleId}")
