@@ -10,9 +10,7 @@ import java.util.List;
 public interface CategoryService {
     List<Category> findAllCategory();
     List<Product> findProductByid(Long id);
-
     Category saveCategory(CategoryDTO categoryDTO);
     Category updateCategory(Long id , CategoryDTO categoryDTO);
-
     String deleteCategory(Long id);
 }

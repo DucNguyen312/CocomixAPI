@@ -126,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String  cancelOrder(Long id) {
+    public String cancelOrder(Long id) {
         Order order = orderRepository.findById(id).orElse(null);
         if (order == null)
             return "Not found id";

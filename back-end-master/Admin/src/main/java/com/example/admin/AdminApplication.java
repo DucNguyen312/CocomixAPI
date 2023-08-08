@@ -1,7 +1,6 @@
 package com.example.admin;
 
-import com.example.library.Model.OrderDetail;
-import com.example.library.Repository.OrderDetailRepository;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

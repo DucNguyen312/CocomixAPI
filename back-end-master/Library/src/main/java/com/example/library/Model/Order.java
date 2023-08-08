@@ -16,7 +16,7 @@ import java.util.List;
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idorder")
     private Long id;
     private Date ngaydat;

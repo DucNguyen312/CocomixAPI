@@ -15,7 +15,7 @@ import java.util.List;
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -36,6 +36,6 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Collection<Role> roles;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users" , cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;
 }

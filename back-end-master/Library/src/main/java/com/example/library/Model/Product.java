@@ -17,7 +17,7 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idproduct")
     private Long id;
     private String name;
@@ -35,5 +35,9 @@ public class Product {
     @JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "idproduct", referencedColumnName = "idproduct"),
             inverseJoinColumns = @JoinColumn(name = "idcategory", referencedColumnName = "idcategory"))
     private Collection<Category> categories;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private Collection<Product_Maket> productMakets;
 
 }
