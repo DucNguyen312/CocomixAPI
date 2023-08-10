@@ -5,21 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Data @AllArgsConstructor @NoArgsConstructor
-public class Screen {
+public class ConversionRules {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idscreen")
-    private Long id;
+    @Column(name = "idRules")
+    private Long idRules;
+
     private String name;
-
-    @Lob
-    private String images;
     private String description;
-
-    @OneToMany(mappedBy = "screens")
-    private Collection<Role_screen_permission> roleScreenPermissions;
+    private Long point_amount;
+    private double conversion_rate;
 }
