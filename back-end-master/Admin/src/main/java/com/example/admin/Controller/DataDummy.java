@@ -3,7 +3,6 @@ package com.example.admin.Controller;
 
 import com.example.library.DTO.MarketDTO;
 import com.example.library.DTO.RequestOrder;
-import com.example.library.DTO.UserDTO;
 import com.example.library.Model.*;
 import com.example.library.Repository.*;
 import com.example.library.Service.*;
@@ -33,18 +32,18 @@ public class DataDummy implements CommandLineRunner {
     private ProductRepository productRepository;
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-
     @Autowired
     private MarketRepository marketRepository;
-
     @Autowired
     private MarketService marketService;
+    @Autowired
+    private PointsService pointsService;
+    @Autowired
+    private AccumlatePointRepository accumlatePointRepository;
 
 
     @Override
@@ -55,6 +54,7 @@ public class DataDummy implements CommandLineRunner {
         addProduct();
         addOrder();
         addmarket();
+        addPoint();
     }
 
     public void addUser() {
@@ -119,7 +119,6 @@ public class DataDummy implements CommandLineRunner {
     }
 
     public void addProduct() {
-
         if(!productRepository.existsByName("asus")){
             Product product = new Product();
             product.setName("asus");
@@ -180,6 +179,44 @@ public class DataDummy implements CommandLineRunner {
             marketDTO.setPrice_increase(15000.00);
             marketService.createMarket(marketDTO);
         }
+    }
+
+    public void addPoint(){
+        if (!accumlatePointRepository.existsByUsers_FullName("Tran Khac Thien")){
+            AccumlatePoints accumlatePoints = new AccumlatePoints();
+            Users users = userRepository.findByFullName("Tran Khac Thien");
+            accumlatePoints.setPoints((long) 10);
+            accumlatePoints.setUsers(users);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2023, Calendar.DECEMBER, 12);
+            Date expiration = calendar.getTime();
+            java.sql.Date sqlExpiration = new java.sql.Date(expiration.getTime());
+
+            accumlatePoints.setExpiration(sqlExpiration);
+
+            accumlatePoints.setCreate_time(convertToDate("09/08/2023"));
+            accumlatePoints.setUpdate_time(convertToDate("09/08/2023"));
+            accumlatePointRepository.save(accumlatePoints);
+        }
+
+        if (!accumlatePointRepository.existsByUsers_FullName("Nguyễn Hữu Đức")){
+            AccumlatePoints accumlatePoints = new AccumlatePoints();
+            Users user = userRepository.findByFullName("Nguyễn Hữu Đức");
+            accumlatePoints.setPoints((long) 100);
+            accumlatePoints.setUsers(user);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2023, Calendar.DECEMBER, 3);
+            Date expiration = calendar.getTime();
+            java.sql.Date sqlExpiration = new java.sql.Date(expiration.getTime());
+            accumlatePoints.setExpiration(sqlExpiration);
+
+            accumlatePoints.setCreate_time(convertToDate("09/08/2023"));
+            accumlatePoints.setUpdate_time(convertToDate("09/08/2023"));
+            accumlatePointRepository.save(accumlatePoints);
+        }
+
     }
 
     public Timestamp convertToDate(String date) {

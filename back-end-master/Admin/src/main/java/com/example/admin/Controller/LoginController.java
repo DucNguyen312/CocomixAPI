@@ -1,17 +1,13 @@
 package com.example.admin.Controller;
 
+import com.example.library.DTO.AccumlatePointsDTO;
 import com.example.library.DTO.UserDTO;
 import com.example.library.DTO.User_OrderDTO;
-import com.example.library.Model.Order;
-import com.example.library.Model.OrderDetail;
+import com.example.library.Model.AccumlatePoints;
 import com.example.library.Model.Users;
-import com.example.library.Service.CacheService;
-import com.example.library.Service.OrderService;
-import com.example.library.Service.RoleService;
-import com.example.library.Service.UserService;
+import com.example.library.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +23,8 @@ public class LoginController {
     private RoleService roleService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private PointsService pointsService;
 
     @GetMapping("")
     public ResponseEntity<List<Users>> getAll(@RequestParam(value = "query" , required = false) String keyword){
@@ -102,6 +100,7 @@ public class LoginController {
         return ResponseEntity.ok(userService.encryptPassword(password));
     }
 
+    //Role
     @PostMapping("/{userId}/role/{roleId}")
     public ResponseEntity<String> addUserRole(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
         if (userId <= 0 || roleId <= 0) {
@@ -137,6 +136,26 @@ public class LoginController {
 
     @GetMapping("/{userId}/order")
     public ResponseEntity<List<User_OrderDTO>> getListOrder(@PathVariable(value = "userId") Long id){
+        if (id == null)
+            return ResponseEntity.badRequest().body(null);
         return ResponseEntity.ok(orderService.ListUserOrder(id));
+    }
+
+    //Point
+    @GetMapping("/{userId}/accumulate points")
+    public ResponseEntity<?> getPoint(@PathVariable(value = "userId") Long id){
+        if (id == null)
+            return ResponseEntity.badRequest().body("Not Found id");
+        List<AccumlatePoints> accumlatePointsList = pointsService.ListPoitnFotUser(id);
+        return ResponseEntity.ok(accumlatePointsList);
+    }
+
+    @PostMapping("/{userId}/accumulate points")
+    public ResponseEntity<String> addPoint(@PathVariable(value = "userId") Long id, @RequestBody AccumlatePointsDTO accumlatePointsDTO){
+        if (id == null)
+            return ResponseEntity.badRequest().body("Not found id");
+        if (accumlatePointsDTO == null)
+            return ResponseEntity.badRequest().body("Not found value");
+        return ResponseEntity.ok(pointsService.addPointForUser(id , accumlatePointsDTO));
     }
 }

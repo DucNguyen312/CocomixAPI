@@ -16,7 +16,6 @@ public interface MarketService {
     String deleteMarket(Long id);
     String updateProductMarket(Long idMarket , Long idProduct , Product_MarketDTO productMarketDTO);
     String deleteProductMarket(Long idMarket , Long idProduct);
-
     List<Product> getListProduct_Market(Long id);
 
 }

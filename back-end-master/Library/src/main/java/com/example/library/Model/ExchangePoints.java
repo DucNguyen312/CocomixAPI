@@ -6,37 +6,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-
+import java.util.Date;
 
 @Entity
-@Table(name = "orderDetail")
-@Data @AllArgsConstructor @NoArgsConstructor
-public class OrderDetail {
+@Table(name = "exchangePoints")
+@Data @NoArgsConstructor @AllArgsConstructor
+public class ExchangePoints {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idorderDetail")
-    private Long id;
-    private Integer quantity;
-    private double price;
-    private double totalprice;
-    private Timestamp create_time;
+    private Long idexchange;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idproduct", referencedColumnName = "idproduct")
+    @JsonBackReference
     private Product products;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idorder", referencedColumnName = "idorder")
-    @JsonBackReference
-    private Order order;
+    @JoinColumn(name = "id_points", referencedColumnName = "id_points")
+    private AccumlatePoints accumlatePoints;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @JsonBackReference
     private Users users;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idpromotion", referencedColumnName = "idpromotion")
-    private Promotion promotions;
+    private Long points_required;
+    private Date exchange_date;
 }

@@ -1,5 +1,7 @@
 package com.example.library.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Data @NoArgsConstructor @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +40,23 @@ public class Users {
     private Collection<Role> roles;
 
     @OneToMany(mappedBy = "users" , cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Product> products;
+
+    @OneToMany(mappedBy = "users" , cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderDetail> orderDetails;
+
+    @OneToMany(mappedBy = "users" , cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<AccumlatePoints> accumlatePoints;
+
+    @OneToMany(mappedBy = "users" , cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ExchangePoints> exchangePoints;
+
+    @OneToMany(mappedBy = "users" , cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Promotion> promotions;
+
 }

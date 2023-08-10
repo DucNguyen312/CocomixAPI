@@ -36,8 +36,15 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "idcategory", referencedColumnName = "idcategory"))
     private Collection<Category> categories;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private Users users;
+
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     private Collection<Product_Maket> productMakets;
 
+    @OneToMany(mappedBy = "products")
+    @JsonIgnore
+    private Collection<ExchangePoints> exchangePoints;
 }
