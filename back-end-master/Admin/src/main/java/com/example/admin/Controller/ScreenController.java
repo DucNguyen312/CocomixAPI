@@ -50,4 +50,7 @@ public class ScreenController {
         return ResponseEntity.ok(screenService.deleteScreen(id));
     }
 
+
+
+
 }

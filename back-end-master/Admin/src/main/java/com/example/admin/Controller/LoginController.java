@@ -25,6 +25,8 @@ public class LoginController {
     private OrderService orderService;
     @Autowired
     private PointsService pointsService;
+    @Autowired
+    private ScreenService screenService;
 
     @GetMapping("")
     public ResponseEntity<List<Users>> getAll(@RequestParam(value = "query" , required = false) String keyword){
@@ -157,5 +159,28 @@ public class LoginController {
         if (accumlatePointsDTO == null)
             return ResponseEntity.badRequest().body("Not found value");
         return ResponseEntity.ok(pointsService.addPointForUser(id , accumlatePointsDTO));
+    }
+
+    @PostMapping("/{userId}/screen/{screenId}")
+    public ResponseEntity<?> addScreen(@PathVariable(name = "userId") Long userId , @PathVariable(name = "screenId") Long screenId){
+        if (userId == null || screenId == null)
+            return ResponseEntity.ok("Not found id on the path");
+        return ResponseEntity.ok(screenService.addScreenForUser(userId,screenId));
+
+    }
+
+    @DeleteMapping("/{userId}/screen/{screenId}")
+    public ResponseEntity<?> deleteScreen(@PathVariable(name = "userId") Long userId , @PathVariable(name = "screenId") Long screenId){
+        if (userId == null || screenId == null)
+            return ResponseEntity.ok("Not found id on the path");
+        return ResponseEntity.ok(screenService.deleteScreenForUser(userId,screenId));
+
+    }
+
+    @GetMapping("/{userId}/screen")
+    public ResponseEntity<?> getListScreen(@PathVariable(name = "userId") Long userId){
+        if (userId == null)
+            return ResponseEntity.badRequest().body("Not found id on the path");
+        return ResponseEntity.ok(screenService.getListScreenForUser(userId));
     }
 }

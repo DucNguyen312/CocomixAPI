@@ -2,6 +2,7 @@ package com.example.library.Model;
 
 import com.example.library.DTO.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "promotion")
 @Data @NoArgsConstructor @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +39,7 @@ public class Promotion {
     private Users users;
 
     @OneToMany(mappedBy = "promotions" , cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderDetail> orderDetails;
 
 }
