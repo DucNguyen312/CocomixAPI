@@ -1,9 +1,11 @@
 package com.example.user.Controller;
 
+import com.example.library.DTO.AccumlatePointsDTO;
 import com.example.library.DTO.UserDTO;
+import com.example.library.DTO.User_OrderDTO;
+import com.example.library.Model.AccumlatePoints;
 import com.example.library.Model.Users;
-import com.example.library.Service.CacheService;
-import com.example.library.Service.UserService;
+import com.example.library.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +18,16 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-
     @Autowired
     private CacheService cacheService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private PointsService pointsService;
+    @Autowired
+    private ScreenService screenService;
 
     @GetMapping("")
     public ResponseEntity<List<Users>> getAll(@RequestParam(value = "query" , required = false) String keyword){
@@ -90,5 +99,87 @@ public class UserController {
         if(password==null)
             return ResponseEntity.badRequest().body("not found password");
         return ResponseEntity.ok(userService.encryptPassword(password));
+    }
+
+    //Role
+    @PostMapping("/{userId}/role/{roleId}")
+    public ResponseEntity<String> addUserRole(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
+        if (userId <= 0 || roleId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid user or role ID.");
+        }
+        if(userId == null || roleId == null)
+            return ResponseEntity.badRequest().body("Not found id_user or id_role");
+
+        return ResponseEntity.ok(roleService.addUserRole(userId , roleId));
+    }
+
+    @DeleteMapping("/{userId}/role/{roleId}")
+    public ResponseEntity<String> deleteUserRole(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
+        if (userId <= 0 || roleId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid user or role ID.");
+        }
+        if(userId == null || roleId == null)
+            return ResponseEntity.badRequest().body("Not found id_user or id_role");
+
+        return ResponseEntity.ok(roleService.deleteUserRole(userId , roleId));
+    }
+
+    @PutMapping("/{userId}/role/{roleId}")
+    public ResponseEntity<String> updateUserRole(@PathVariable("userId") Long userId, @PathVariable("roleId") Long roleId) {
+        if (userId <= 0 || roleId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid user or role ID.");
+        }
+        if(userId == null || roleId == null)
+            return ResponseEntity.badRequest().body("Not found id_user or id_role");
+
+        return ResponseEntity.ok(roleService.updateUserRole(userId , roleId));
+    }
+
+    @GetMapping("/{userId}/order")
+    public ResponseEntity<List<User_OrderDTO>> getListOrder(@PathVariable(value = "userId") Long id){
+        if (id == null)
+            return ResponseEntity.badRequest().body(null);
+        return ResponseEntity.ok(orderService.ListUserOrder(id));
+    }
+
+    //Point
+    @GetMapping("/{userId}/accumulate points")
+    public ResponseEntity<?> getPoint(@PathVariable(value = "userId") Long id){
+        if (id == null)
+            return ResponseEntity.badRequest().body("Not Found id");
+        List<AccumlatePoints> accumlatePointsList = pointsService.ListPoitnFotUser(id);
+        return ResponseEntity.ok(accumlatePointsList);
+    }
+
+    @PostMapping("/{userId}/accumulate points")
+    public ResponseEntity<String> addPoint(@PathVariable(value = "userId") Long id, @RequestBody AccumlatePointsDTO accumlatePointsDTO){
+        if (id == null)
+            return ResponseEntity.badRequest().body("Not found id");
+        if (accumlatePointsDTO == null)
+            return ResponseEntity.badRequest().body("Not found value");
+        return ResponseEntity.ok(pointsService.addPointForUser(id , accumlatePointsDTO));
+    }
+
+    @PostMapping("/{userId}/screen/{screenId}")
+    public ResponseEntity<?> addScreen(@PathVariable(name = "userId") Long userId , @PathVariable(name = "screenId") Long screenId){
+        if (userId == null || screenId == null)
+            return ResponseEntity.ok("Not found id on the path");
+        return ResponseEntity.ok(screenService.addScreenForUser(userId,screenId));
+
+    }
+
+    @DeleteMapping("/{userId}/screen/{screenId}")
+    public ResponseEntity<?> deleteScreen(@PathVariable(name = "userId") Long userId , @PathVariable(name = "screenId") Long screenId){
+        if (userId == null || screenId == null)
+            return ResponseEntity.ok("Not found id on the path");
+        return ResponseEntity.ok(screenService.deleteScreenForUser(userId,screenId));
+
+    }
+
+    @GetMapping("/{userId}/screen")
+    public ResponseEntity<?> getListScreen(@PathVariable(name = "userId") Long userId){
+        if (userId == null)
+            return ResponseEntity.badRequest().body("Not found id on the path");
+        return ResponseEntity.ok(screenService.getListScreenForUser(userId));
     }
 }

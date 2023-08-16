@@ -46,10 +46,11 @@ public class UsersConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/user/**" , "/product/**" , "/category/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/user/**", "/product/**" , "/category/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/**", "/product/**" , "/category/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/user/**", "/product/**" , "/category/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/admin/**" , "/product/**" , "/category/**" , "/role/**" , "/order/**" , "/market/**" , "/promotion/**" , "/screen/**").permitAll()
+                .antMatchers(HttpMethod.DELETE , "/admin/**", "/product/**","/category/**", "/role/**","/order/**", "/market/**", "/promotion/**" , "/screen/**").permitAll()
+                .antMatchers(HttpMethod.GET , "/admin/**" , "/product/**","/category/**", "/role/**","/order/**", "/market/**", "/promotion/**" , "/screen/**").permitAll()
+                .antMatchers(HttpMethod.PUT , "/admin/**", "/product/**","/category/**", "/role/**","/order/**", "/market/**", "/promotion/**" , "/screen/**").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
