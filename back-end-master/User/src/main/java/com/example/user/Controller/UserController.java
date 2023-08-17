@@ -80,7 +80,7 @@ public class UserController {
         if(users == null)
             return ResponseEntity.badRequest().body("Not found user");
 
-        return ResponseEntity.ok("http://localhost:8005/user/forgot-password/"+cacheService.generateAndCacheToken(keyword));
+        return ResponseEntity.ok("http://localhost:8006/user/forgot-password/"+cacheService.generateAndCacheToken(keyword));
     }
 
     @PostMapping("/forgot-password/{token}")
